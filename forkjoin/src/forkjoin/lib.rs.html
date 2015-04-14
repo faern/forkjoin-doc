@@ -379,7 +379,6 @@
 <span id="337">337</span>
 <span id="338">338</span>
 <span id="339">339</span>
-<span id="340">340</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 Linus Färnstrand</span>
 <span class='comment'>//</span>
@@ -681,7 +680,6 @@
     <span class='doccomment'>/// Not very high priority.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>new</span>() <span class='op'>-&gt;</span> <span class='ident'>ForkPool</span><span class='op'>&lt;</span><span class='ident'>Arg</span>,<span class='ident'>Ret</span><span class='op'>&gt;</span> {
         <span class='kw'>let</span> <span class='ident'>nthreads</span> <span class='op'>=</span> <span class='ident'>num_cpus</span>::<span class='ident'>get</span>();
-        <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;nthreads: {}&quot;</span>, <span class='ident'>nthreads</span>);
         <span class='ident'>ForkPool</span>::<span class='ident'>with_threads</span>(<span class='ident'>nthreads</span>)
     }
 
