@@ -41,9 +41,9 @@
     </nav>
 
     <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>deque</a>::<wbr><a class='struct' href=''>BufferPool</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>deque</a>::<wbr><a class='struct' href=''>BufferPool</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-296' href='../src/deque/lib.rs.html#122-124'>[src]</a></span></h1>
+        </span><a id='src-296' class='srclink' href='../src/deque/lib.rs.html#122-124'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct BufferPool&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; {
     // some fields omitted
 }</pre><div class='docblock'><p>The allocation pool for buffers used by work-stealing deques. Right now this
@@ -53,14 +53,14 @@ deques.</p>
 <p>This data structure is protected by a mutex, but it is rarely used. Deques
 will only use this structure when allocating a new buffer or deallocating a
 previous one.</p>
-</div><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h4>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h4>
 <div class='docblock'><p>Allocates a new buffer pool which in turn can be used to allocate new
 deques.</p>
-</div><h4 id='method.deque' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.deque' class='fnname'>deque</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='../deque/struct.Worker.html' title='deque::Worker'>Worker</a>&lt;T&gt;, <a class='struct' href='../deque/struct.Stealer.html' title='deque::Stealer'>Stealer</a>&lt;T&gt;)</a></code></h4>
+</div><h4 id='method.deque' class='method'><code>fn <a href='#method.deque' class='fnname'>deque</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(<a class='struct' href='../deque/struct.Worker.html' title='deque::Worker'>Worker</a>&lt;T&gt;, <a class='struct' href='../deque/struct.Stealer.html' title='deque::Stealer'>Stealer</a>&lt;T&gt;)</a></code></h4>
 <div class='docblock'><p>Allocates a new work-stealing deque which will send/receiving memory to
 and from this buffer pool.</p>
-</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><a class='stability Stable' title='Stable'></a><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h4>
-<h4 id='method.clone_from' class='method'><a class='stability Stable' title='Stable'></a><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;T: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../deque/struct.BufferPool.html' title='deque::BufferPool'>BufferPool</a>&lt;T&gt;</code></h4>
+<h4 id='method.clone_from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>
 

@@ -41,18 +41,21 @@
     </nav>
 
     <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>Fork</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>Fork</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1483' href='../src/forkjoin/lib.rs.html#204-212'>[src]</a></span></h1>
+        </span><a id='src-1483' class='srclink' href='../src/forkjoin/lib.rs.html#204-212'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Fork&lt;Arg, Ret&gt; {
     pub fun: <a class='type' href='../forkjoin/type.TaskFun.html' title='forkjoin::TaskFun'>TaskFun</a>&lt;Arg, Ret&gt;,
     pub args: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Arg&gt;,
     pub join: <a class='enum' href='../forkjoin/enum.AlgoStyle.html' title='forkjoin::AlgoStyle'>AlgoStyle</a>&lt;Ret&gt;,
 }</pre><div class='docblock'><p>Struct describing how a <code>Task</code> want to fork into multiple subtasks.</p>
 </div><h2 class='fields'>Fields</h2>
-<table><tr><td id='structfield.fun'><a class='stability Unmarked' title='No stability level'></a><code>fun</code></td><td><div class='docblock'><p>A function pointer. The function that will be executed by all the subtasks</p>
-</div></td></tr><tr><td id='structfield.args'><a class='stability Unmarked' title='No stability level'></a><code>args</code></td><td><div class='docblock'><p>A list of the arguments to the subtasks. One subtask will be created for each argument.</p>
-</div></td></tr><tr><td id='structfield.join'><a class='stability Unmarked' title='No stability level'></a><code>join</code></td><td><div class='docblock'><p>Enum showing the type of algorithm, indicate what should be done with results from
+<table><tr class='stab '>
+                                  <td id='structfield.fun'><code>fun</code></td><td><div class='docblock'><p>A function pointer. The function that will be executed by all the subtasks</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.args'><code>args</code></td><td><div class='docblock'><p>A list of the arguments to the subtasks. One subtask will be created for each argument.</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.join'><code>join</code></td><td><div class='docblock'><p>Enum showing the type of algorithm, indicate what should be done with results from
 subtasks created by this fork.</p>
 </div></td></tr></table></section>
     <section id='search' class="content hidden"></section>

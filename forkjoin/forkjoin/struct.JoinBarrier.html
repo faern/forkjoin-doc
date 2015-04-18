@@ -41,9 +41,9 @@
     </nav>
 
     <section id='main' class="content struct">
-<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>JoinBarrier</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>JoinBarrier</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1505' href='../src/forkjoin/lib.rs.html#234-244'>[src]</a></span></h1>
+        </span><a id='src-1505' class='srclink' href='../src/forkjoin/lib.rs.html#234-244'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct JoinBarrier&lt;Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
     pub ret_counter: <a class='struct' href='http://doc.rust-lang.org/nightly/core/atomic/struct.AtomicUsize.html' title='core::atomic::AtomicUsize'>AtomicUsize</a>,
     pub joinfun: <a class='type' href='../forkjoin/type.TaskJoin.html' title='forkjoin::TaskJoin'>TaskJoin</a>&lt;Ret&gt;,
@@ -51,11 +51,15 @@
     pub parent: <a class='enum' href='../forkjoin/enum.ResultReceiver.html' title='forkjoin::ResultReceiver'>ResultReceiver</a>&lt;Ret&gt;,
 }</pre><div class='docblock'><p>Internal struct for receiving results from multiple subtasks in parallel</p>
 </div><h2 class='fields'>Fields</h2>
-<table><tr><td id='structfield.ret_counter'><a class='stability Unmarked' title='No stability level'></a><code>ret_counter</code></td><td><div class='docblock'><p>Atomic counter counting missing arguments before this join can be executed.</p>
-</div></td></tr><tr><td id='structfield.joinfun'><a class='stability Unmarked' title='No stability level'></a><code>joinfun</code></td><td><div class='docblock'><p>Function pointer to execute when all arguments have arrived.</p>
-</div></td></tr><tr><td id='structfield.joinfunarg'><a class='stability Unmarked' title='No stability level'></a><code>joinfunarg</code></td><td><div class='docblock'><p>Vector holding the results of all subtasks. Initialized unsafely so can&#39;t be used
+<table><tr class='stab '>
+                                  <td id='structfield.ret_counter'><code>ret_counter</code></td><td><div class='docblock'><p>Atomic counter counting missing arguments before this join can be executed.</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.joinfun'><code>joinfun</code></td><td><div class='docblock'><p>Function pointer to execute when all arguments have arrived.</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.joinfunarg'><code>joinfunarg</code></td><td><div class='docblock'><p>Vector holding the results of all subtasks. Initialized unsafely so can&#39;t be used
 for anything until all the values have been put in place.</p>
-</div></td></tr><tr><td id='structfield.parent'><a class='stability Unmarked' title='No stability level'></a><code>parent</code></td><td><div class='docblock'><p>Where to send the result of the execution of <code>joinfun</code></p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.parent'><code>parent</code></td><td><div class='docblock'><p>Where to send the result of the execution of <code>joinfun</code></p>
 </div></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 

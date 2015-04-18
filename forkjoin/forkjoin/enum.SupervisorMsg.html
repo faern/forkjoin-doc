@@ -41,21 +41,21 @@
     </nav>
 
     <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>SupervisorMsg</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>SupervisorMsg</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1597' href='../src/forkjoin/lib.rs.html#272-282'>[src]</a></span></h1>
+        </span><a id='src-1597' class='srclink' href='../src/forkjoin/lib.rs.html#272-282'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum SupervisorMsg&lt;Arg: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>, Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
     OutOfWork(<a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>),
     Schedule(<a class='struct' href='../forkjoin/struct.Task.html' title='forkjoin::Task'>Task</a>&lt;Arg, Ret&gt;),
     Shutdown,
 }</pre><div class='docblock'><p>Messages from <code>ForkPool</code> and <code>WorkerThread</code> to the <code>PoolSupervisor</code>.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.OutOfWork'><a class='stability Unmarked' title='No stability level'></a><code>OutOfWork</code></td><td><div class='docblock'><p>The WorkerThreads use this to tell the <code>PoolSupervisor</code> they don&#39;t have anything
+<table><tr><td id='variant.OutOfWork'><code>OutOfWork</code></td><td><div class='docblock'><p>The WorkerThreads use this to tell the <code>PoolSupervisor</code> they don&#39;t have anything
 to do and that stealing did not give any new <code>Task</code>s.
 The argument <code>usize</code> is the id of the <code>WorkerThread</code>.</p>
-</div></td></tr><tr><td id='variant.Schedule'><a class='stability Unmarked' title='No stability level'></a><code>Schedule</code></td><td><div class='docblock'><p>The <code>ForkPool</code> uses this to schedule new tasks on the <code>PoolSupervisor</code>.
+</div></td></tr><tr><td id='variant.Schedule'><code>Schedule</code></td><td><div class='docblock'><p>The <code>ForkPool</code> uses this to schedule new tasks on the <code>PoolSupervisor</code>.
 The <code>PoolSupervisor</code> will later schedule these to a <code>WorkerThread</code> when it see fit.</p>
-</div></td></tr><tr><td id='variant.Shutdown'><a class='stability Unmarked' title='No stability level'></a><code>Shutdown</code></td><td><div class='docblock'><p>Message from the <code>ForkPool</code> to the <code>PoolSupervisor</code> to tell it to shutdown.</p>
+</div></td></tr><tr><td id='variant.Shutdown'><code>Shutdown</code></td><td><div class='docblock'><p>Message from the <code>ForkPool</code> to the <code>PoolSupervisor</code> to tell it to shutdown.</p>
 </div></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 

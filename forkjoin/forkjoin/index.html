@@ -41,9 +41,9 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>forkjoin</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>forkjoin</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/forkjoin/lib.rs.html#15-339'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/forkjoin/lib.rs.html#15-339'>[src]</a></span></h1>
 <div class='docblock'><p>A work stealing fork-join parallelism library.</p>
 
 <p>Inspired by the blog post <a href="http://smallcultfollowing.com/babysteps/blog/2013/06/11/data-parallelism-in-rust/">Data Parallelism in Rust</a>
@@ -185,85 +185,107 @@ that a TaskFun need to return before anything can happen.</p>
 calculating. It can be <code>TaskResult::Fork(fork)</code> if it needs to fork.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Fork.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Fork.html'
                                title='forkjoin::Fork'>Fork</a></td>
-                        <td class='docblock short'><p>Struct describing how a <code>Task</code> want to fork into multiple subtasks.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Struct describing how a <code>Task</code> want to fork into multiple subtasks.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.ForkPool.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.ForkPool.html'
                                title='forkjoin::ForkPool'>ForkPool</a></td>
-                        <td class='docblock short'><p>Main struct of the ForkJoin library.
+                        <td class='docblock short'>
+                             <p>Main struct of the ForkJoin library.
 Represents a pool of threads implementing a work stealing algorithm.</p>
-</td>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.JoinBarrier.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.JoinBarrier.html'
                                title='forkjoin::JoinBarrier'>JoinBarrier</a></td>
-                        <td class='docblock short'><p>Internal struct for receiving results from multiple subtasks in parallel</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Internal struct for receiving results from multiple subtasks in parallel</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Task.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Task.html'
                                title='forkjoin::Task'>Task</a></td>
-                        <td class='docblock short'></td>
+                        <td class='docblock short'>
+                             
+                        </td>
                     </tr>
                 </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.AlgoStyle.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.AlgoStyle.html'
                                title='forkjoin::AlgoStyle'>AlgoStyle</a></td>
-                        <td class='docblock short'><p>Enum representing the style of the executed algorithm.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Enum representing the style of the executed algorithm.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.ResultReceiver.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.ResultReceiver.html'
                                title='forkjoin::ResultReceiver'>ResultReceiver</a></td>
-                        <td class='docblock short'><p>Enum describing what to do with results of <code>Task</code>s and <code>JoinBarrier</code>s.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Enum describing what to do with results of <code>Task</code>s and <code>JoinBarrier</code>s.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.SupervisorMsg.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.SupervisorMsg.html'
                                title='forkjoin::SupervisorMsg'>SupervisorMsg</a></td>
-                        <td class='docblock short'><p>Messages from <code>ForkPool</code> and <code>WorkerThread</code> to the <code>PoolSupervisor</code>.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Messages from <code>ForkPool</code> and <code>WorkerThread</code> to the <code>PoolSupervisor</code>.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.TaskResult.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.TaskResult.html'
                                title='forkjoin::TaskResult'>TaskResult</a></td>
-                        <td class='docblock short'><p>Return values from tasks. Represent a computed value or a fork of the algorithm.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Return values from tasks. Represent a computed value or a fork of the algorithm.</p>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.WorkerMsg.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.WorkerMsg.html'
                                title='forkjoin::WorkerMsg'>WorkerMsg</a></td>
-                        <td class='docblock short'><p>Messages from the <code>PoolSupervisor</code> to <code>WorkerThread</code>s</p>
-</td>
+                        <td class='docblock short'>
+                             <p>Messages from the <code>PoolSupervisor</code> to <code>WorkerThread</code>s</p>
+
+                        </td>
                     </tr>
                 </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='type' href='type.TaskFun.html'
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.TaskFun.html'
                                title='forkjoin::TaskFun'>TaskFun</a></td>
-                        <td class='docblock short'><p>Type definition of the main function in a task.
+                        <td class='docblock short'>
+                             <p>Type definition of the main function in a task.
 Your task functions must have this signature</p>
-</td>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='type' href='type.TaskJoin.html'
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.TaskJoin.html'
                                title='forkjoin::TaskJoin'>TaskJoin</a></td>
-                        <td class='docblock short'><p>Type definition of functions joining together forked results.
+                        <td class='docblock short'>
+                             <p>Type definition of functions joining together forked results.
 Only used in <code>AlgoStyle::Summa</code> algorithms.</p>
-</td>
+
+                        </td>
                     </tr>
                 </table></section>
     <section id='search' class="content hidden"></section>

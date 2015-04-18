@@ -41,9 +41,9 @@
     </nav>
 
     <section id='main' class="content mod">
-<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>deque</a><wbr></span><span class='out-of-band'><a href='stability.html'>[stability]</a> <span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>deque</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-0' href='../src/deque/lib.rs.html#10-406'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/deque/lib.rs.html#10-406'>[src]</a></span></h1>
 <div class='docblock'><p>A (mostly) lock-free concurrent work-stealing deque</p>
 
 <p>This module contains an implementation of the Chase-Lev work stealing deque
@@ -81,38 +81,46 @@ and deallocation portions. Otherwise all operations are lock-free.</p>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Reexports</a></h2>
 <table><tr><td><code>pub use self::<a class='enum' href='../deque/enum.Stolen.html' title='deque::Stolen'>Stolen</a>::*;</code></td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.BufferPool.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.BufferPool.html'
                                title='deque::BufferPool'>BufferPool</a></td>
-                        <td class='docblock short'><p>The allocation pool for buffers used by work-stealing deques. Right now this
+                        <td class='docblock short'>
+                             <p>The allocation pool for buffers used by work-stealing deques. Right now this
 structure is used for reclamation of memory after it is no longer in use by
 deques.</p>
-</td>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Stealer.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Stealer.html'
                                title='deque::Stealer'>Stealer</a></td>
-                        <td class='docblock short'><p>The stealing half of the work-stealing deque. Stealers have access to the
+                        <td class='docblock short'>
+                             <p>The stealing half of the work-stealing deque. Stealers have access to the
 opposite end of the deque from the worker, and they only have access to the
 <code>steal</code> method.</p>
-</td>
+
+                        </td>
                     </tr>
                 
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='struct' href='struct.Worker.html'
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Worker.html'
                                title='deque::Worker'>Worker</a></td>
-                        <td class='docblock short'><p>Worker half of the work-stealing deque. This worker has exclusive access to
+                        <td class='docblock short'>
+                             <p>Worker half of the work-stealing deque. This worker has exclusive access to
 one side of the deque, and uses <code>push</code> and <code>pop</code> method to manipulate it.</p>
-</td>
+
+                        </td>
                     </tr>
                 </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table>
-                    <tr>
-                        <td><a class='stability Unmarked' title='No stability level'></a><a class='enum' href='enum.Stolen.html'
+                    <tr class=' module-item'>
+                        <td><a class='enum' href='enum.Stolen.html'
                                title='deque::Stolen'>Stolen</a></td>
-                        <td class='docblock short'><p>When stealing some data, this is an enumeration of the possible outcomes.</p>
-</td>
+                        <td class='docblock short'>
+                             <p>When stealing some data, this is an enumeration of the possible outcomes.</p>
+
+                        </td>
                     </tr>
                 </table></section>
     <section id='search' class="content hidden"></section>

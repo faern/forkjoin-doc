@@ -41,22 +41,22 @@
     </nav>
 
     <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>AlgoStyle</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>AlgoStyle</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="collapse-all" href="#">[-]</a>&nbsp;<a id="expand-all" href="#">[+]</a>
-        </span><a id='src-1497' href='../src/forkjoin/lib.rs.html#215-231'>[src]</a></span></h1>
+        </span><a id='src-1497' class='srclink' href='../src/forkjoin/lib.rs.html#215-231'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum AlgoStyle&lt;Ret&gt; {
     Summa(<a class='type' href='../forkjoin/type.TaskJoin.html' title='forkjoin::TaskJoin'>TaskJoin</a>&lt;Ret&gt;),
     Search,
 }</pre><div class='docblock'><p>Enum representing the style of the executed algorithm.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Summa'><a class='stability Unmarked' title='No stability level'></a><code>Summa</code></td><td><div class='docblock'><p>A <code>Summa</code> style algorithm join together the results of the individual nodes
+<table><tr><td id='variant.Summa'><code>Summa</code></td><td><div class='docblock'><p>A <code>Summa</code> style algorithm join together the results of the individual nodes
 in the problem tree to finally form one result for the entire computation.</p>
 
 <p>Examples of this style include recursively computing fibbonacci numbers
 and summing binary trees.</p>
 
 <p>Takes a function pointer that joins together results as argument.</p>
-</div></td></tr><tr><td id='variant.Search'><a class='stability Unmarked' title='No stability level'></a><code>Search</code></td><td><div class='docblock'><p>A <code>Search</code> style algoritm return their results to the listener directly upon a
+</div></td></tr><tr><td id='variant.Search'><code>Search</code></td><td><div class='docblock'><p>A <code>Search</code> style algoritm return their results to the listener directly upon a
 <code>TaskResult::Done</code>.</p>
 
 <p>Examples of this style include sudoku solvers and nqueens where a node represent
