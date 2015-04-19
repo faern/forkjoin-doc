@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/num_cpus-0.2.1/src/lib.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/num_cpus-0.2.2/src/lib.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>lib.rs.html -- source</title>
@@ -130,6 +130,13 @@
 <span id="88">88</span>
 <span id="89">89</span>
 <span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
 </pre><pre class='rust '>
 <span class='doccomment'>//! Replaces the deprecated functionality of std::os::num_cpus.</span>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>test</span>, <span class='ident'>deny</span>(<span class='ident'>warnings</span>))]</span>
@@ -200,6 +207,13 @@
     <span class='comment'>//to-do: replace with libc::_SC_NPROCESSORS_ONLN once available</span>
     <span class='kw'>unsafe</span> {
         <span class='ident'>libc</span>::<span class='ident'>sysconf</span>(<span class='number'>84</span>) <span class='kw'>as</span> <span class='ident'>usize</span>
+    }
+}
+<span class='attribute'>#[<span class='ident'>cfg</span>(<span class='ident'>target_os</span> <span class='op'>=</span> <span class='string'>&quot;nacl&quot;</span>)]</span>
+<span class='kw'>fn</span> <span class='ident'>get_num_cpus</span>() <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
+    <span class='comment'>//to-do: replace with libc::_SC_NPROCESSORS_ONLN once available</span>
+    <span class='kw'>unsafe</span> {
+        <span class='ident'>libc</span>::<span class='ident'>sysconf</span>(<span class='number'>1</span>) <span class='kw'>as</span> <span class='ident'>usize</span>
     }
 }
 
