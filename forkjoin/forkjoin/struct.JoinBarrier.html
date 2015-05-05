@@ -43,10 +43,11 @@
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>JoinBarrier</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-1505' class='srclink' href='../src/forkjoin/lib.rs.html#234-244' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-1935' class='srclink' href='../src/forkjoin/lib.rs.html#327-339' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct JoinBarrier&lt;Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
     pub ret_counter: <a class='struct' href='http://doc.rust-lang.org/nightly/core/atomic/struct.AtomicUsize.html' title='core::atomic::AtomicUsize'>AtomicUsize</a>,
-    pub joinfun: <a class='type' href='../forkjoin/type.TaskJoin.html' title='forkjoin::TaskJoin'>TaskJoin</a>&lt;Ret&gt;,
+    pub joinfun: <a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;,
+    pub joinarg: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Ret&gt;,
     pub joinfunarg: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Ret&gt;,
     pub parent: <a class='enum' href='../forkjoin/enum.ResultReceiver.html' title='forkjoin::ResultReceiver'>ResultReceiver</a>&lt;Ret&gt;,
 }</pre><div class='docblock'><p>Internal struct for receiving results from multiple subtasks in parallel</p>
@@ -54,7 +55,9 @@
 <table><tr class='stab '>
                                   <td id='structfield.ret_counter'><code>ret_counter</code></td><td><div class='docblock'><p>Atomic counter counting missing arguments before this join can be executed.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.joinfun'><code>joinfun</code></td><td><div class='docblock'><p>Function pointer to execute when all arguments have arrived.</p>
+                                  <td id='structfield.joinfun'><code>joinfun</code></td><td><div class='docblock'><p>Function to execute when all arguments have arrived.</p>
+</div></td></tr><tr class='stab '>
+                                  <td id='structfield.joinarg'><code>joinarg</code></td><td><div class='docblock'><p>Extra argument to pass to <code>joinfun</code> only used when <code>joinfun</code> is <code>SummaStyle::Arg</code>.</p>
 </div></td></tr><tr class='stab '>
                                   <td id='structfield.joinfunarg'><code>joinfunarg</code></td><td><div class='docblock'><p>Vector holding the results of all subtasks. Initialized unsafely so can&#39;t be used
 for anything until all the values have been put in place.</p>

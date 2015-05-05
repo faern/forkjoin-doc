@@ -43,22 +43,24 @@
     <section id='main' class="content enum">
 <h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>TaskResult</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-1471' class='srclink' href='../src/forkjoin/lib.rs.html#187-201' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-1811' class='srclink' href='../src/forkjoin/lib.rs.html#259-275' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum TaskResult&lt;Arg, Ret&gt; {
     Done(Ret),
-    Fork(<a class='struct' href='../forkjoin/struct.Fork.html' title='forkjoin::Fork'>Fork</a>&lt;Arg, Ret&gt;),
+    Fork(<a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Arg&gt;, <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Ret&gt;),
 }</pre><div class='docblock'><p>Return values from tasks. Represent a computed value or a fork of the algorithm.</p>
 </div><h2 class='variants'>Variants</h2>
 <table><tr><td id='variant.Done'><code>Done</code></td><td><div class='docblock'><p>Return this from <code>TaskFun</code> to indicate a computed value. Represents a leaf in the
 problem tree of the computation.</p>
 
 <p>If the algorithm style is <code>AlgoStyle::Search</code> the value in <code>Done</code> will be sent
-directly to the <code>Receiver&lt;Ret&gt;</code> held by the submitter of the computation.
+directly to the <code>Job</code> held by the submitter of the computation.
 If the algorithm style is <code>AlgoStyle::Summa</code> the value in <code>Done</code> will be inserted
-into the <code>JoinBarrier</code> allocated by <code>ForkJoin</code>. If it&#39;s the last task to complete
-the join function will be executed.</p>
+into a join barrier and later passed to the algorithms join function when all
+subtasks have completed execution.</p>
 </div></td></tr><tr><td id='variant.Fork'><code>Fork</code></td><td><div class='docblock'><p>Return this from <code>TaskFun</code> to indicate that the algorithm wants to fork.
-Takes a <code>Fork</code> instance describing how to fork.</p>
+Takes a list of arguments to fork on. One subtask will be created for each argument.
+The second value is only used by <code>SummaStyle::Arg</code>-algorithms to send a value directly
+to the <code>TaskJoinArg</code>, passing None in such algorithms will yield a panic.</p>
 </div></td></tr></table></section>
     <section id='search' class="content hidden"></section>
 

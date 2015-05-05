@@ -43,11 +43,18 @@
     <section id='main' class="content mod">
 <h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>forkjoin</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-0' class='srclink' href='../src/forkjoin/lib.rs.html#15-339' title='goto source code'>[src]</a></span></h1>
-<div class='docblock'><p>A work stealing fork-join parallelism library.</p>
+        </span><a id='src-0' class='srclink' href='../src/forkjoin/lib.rs.html#15-490' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'>
+<h1 id="forkjoin" class='section-header'><a
+                           href="#forkjoin">ForkJoin</a></h1>
+<p>A work stealing fork-join parallelism library.</p>
+
+<p><a href="https://travis-ci.org/faern/forkjoin"><img src="https://api.travis-ci.org/faern/forkjoin.svg?branch=master" alt="Build Status"></a></p>
 
 <p>Inspired by the blog post <a href="http://smallcultfollowing.com/babysteps/blog/2013/06/11/data-parallelism-in-rust/">Data Parallelism in Rust</a>
-and implemented as part of a master&#39;s thesis.</p>
+and implemented as part of a master&#39;s thesis. Repository hosted at <a href="https://github.com/faern/forkjoin">github.com/faern/forkjoin</a></p>
+
+<p>Library documentation hosted <a href="https://faern.github.io/rust-docs/forkjoin/forkjoin/">here</a></p>
 
 <p>This library has been developed to accommodate the needs of three types of
 algorithms that all fit very well for fork-join parallelism.</p>
@@ -61,14 +68,24 @@ Characteristics of this style is that the algorithm does not need to mutate its
 argument and the resulting value is only available after every subtask has been
 fully computed.</p>
 
-<h2 id="example-of-summa-style" class='section-header'><a
-                           href="#example-of-summa-style">Example of summa style</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>TaskResult</span>,<span class='ident'>Fork</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>};
+<p>In summa style algorithms the return values of each subtask is passed to a special
+join function that is executed when all subtasks have completed.
+To this join function an extra argument can be sent directly from the task if the algorithm
+has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
+
+<h2 id="example-of-summa-style-(summastyle::noarg)" class='section-header'><a
+                           href="#example-of-summa-style-(summastyle::noarg)">Example of summa style (<code>SummaStyle::NoArg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>fn</span> <span class='ident'>fib_30_with_4_threads</span>() {
     <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>with_threads</span>(<span class='number'>4</span>);
-    <span class='kw'>let</span> <span class='ident'>result_port</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>schedule</span>(<span class='ident'>fib_task</span>, <span class='number'>30</span>);
-    <span class='kw'>let</span> <span class='ident'>result</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='ident'>result_port</span>.<span class='ident'>recv</span>().<span class='ident'>unwrap</span>();
+    <span class='kw'>let</span> <span class='ident'>fibpool</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>init_algorithm</span>(<span class='ident'>Algorithm</span> {
+        <span class='ident'>fun</span>: <span class='ident'>fib_task</span>,
+        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Summa</span>(<span class='ident'>SummaStyle</span>::<span class='ident'>NoArg</span>(<span class='ident'>fib_join</span>)),
+    });
+
+    <span class='kw'>let</span> <span class='ident'>job</span> <span class='op'>=</span> <span class='ident'>fibpool</span>.<span class='ident'>schedule</span>(<span class='number'>30</span>);
+    <span class='kw'>let</span> <span class='ident'>result</span>: <span class='ident'>usize</span> <span class='op'>=</span> <span class='ident'>job</span>.<span class='ident'>recv</span>().<span class='ident'>unwrap</span>();
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1346269</span>, <span class='ident'>result</span>);
 }
 
@@ -76,15 +93,48 @@ fully computed.</p>
     <span class='kw'>if</span> <span class='ident'>n</span> <span class='op'>&lt;</span> <span class='number'>2</span> {
         <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='number'>1</span>)
     } <span class='kw'>else</span> {
-        <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='ident'>Fork</span>{
-            <span class='ident'>fun</span>: <span class='ident'>fib_task</span>,
-            <span class='ident'>args</span>: <span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>n</span><span class='op'>-</span><span class='number'>1</span>,<span class='ident'>n</span><span class='op'>-</span><span class='number'>2</span>],
-            <span class='ident'>join</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Summa</span>(<span class='ident'>fib_join</span>)})
+        <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='ident'>n</span><span class='op'>-</span><span class='number'>1</span>,<span class='ident'>n</span><span class='op'>-</span><span class='number'>2</span>], <span class='prelude-val'>None</span>)
     }
 }
 
 <span class='kw'>fn</span> <span class='ident'>fib_join</span>(<span class='ident'>values</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>usize</span>]) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
     <span class='ident'>values</span>.<span class='ident'>iter</span>().<span class='ident'>fold</span>(<span class='number'>0</span>, <span class='op'>|</span><span class='ident'>acc</span>, <span class='kw-2'>&amp;</span><span class='ident'>v</span><span class='op'>|</span> <span class='ident'>acc</span> <span class='op'>+</span> <span class='ident'>v</span>)
+}
+</pre>
+
+<h2 id="example-of-summa-style-(summastyle::arg)" class='section-header'><a
+                           href="#example-of-summa-style-(summastyle::arg)">Example of summa style (<code>SummaStyle::Arg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
+
+<span class='kw'>struct</span> <span class='ident'>Tree</span> {
+    <span class='ident'>value</span>: <span class='ident'>usize</span>,
+    <span class='ident'>children</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Tree</span><span class='op'>&gt;</span>,
+}
+
+<span class='kw'>fn</span> <span class='ident'>sum_tree</span>(<span class='ident'>t</span>: <span class='kw-2'>&amp;</span><span class='ident'>Tree</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
+    <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>new</span>();
+    <span class='kw'>let</span> <span class='ident'>sumpool</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>init_algorithm</span>(<span class='ident'>Algorithm</span> {
+        <span class='ident'>fun</span>: <span class='ident'>sum_tree_task</span>,
+        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Summa</span>(<span class='ident'>SummaStyle</span>::<span class='ident'>Arg</span>(<span class='ident'>sum_tree_join</span>)),
+    });
+    <span class='kw'>let</span> <span class='ident'>job</span> <span class='op'>=</span> <span class='ident'>sumpool</span>.<span class='ident'>schedule</span>(<span class='ident'>t</span>);
+    <span class='ident'>job</span>.<span class='ident'>recv</span>().<span class='ident'>unwrap</span>()
+}
+
+<span class='kw'>fn</span> <span class='ident'>sum_tree_task</span>(<span class='ident'>t</span>: <span class='kw-2'>&amp;</span><span class='ident'>Tree</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Tree</span>, <span class='ident'>usize</span><span class='op'>&gt;</span> {
+    <span class='kw'>if</span> <span class='ident'>t</span>.<span class='ident'>children</span>.<span class='ident'>is_empty</span>() {
+        <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='ident'>t</span>.<span class='ident'>value</span>)
+    } <span class='kw'>else</span> {
+        <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>fork_args</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Tree</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
+        <span class='kw'>for</span> <span class='ident'>c</span> <span class='kw'>in</span> <span class='ident'>t</span>.<span class='ident'>children</span>.<span class='ident'>iter</span>() {
+            <span class='ident'>fork_args</span>.<span class='ident'>push</span>(<span class='ident'>c</span>);
+        }
+        <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='ident'>fork_args</span>, <span class='prelude-val'>Some</span>(<span class='ident'>t</span>.<span class='ident'>value</span>)) <span class='comment'>// Pass current nodes value to join</span>
+    }
+}
+
+<span class='kw'>fn</span> <span class='ident'>sum_tree_join</span>(<span class='ident'>value</span>: <span class='kw-2'>&amp;</span><span class='ident'>usize</span>, <span class='ident'>values</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>usize</span>]) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
+    <span class='op'>*</span><span class='ident'>value</span> <span class='op'>+</span> <span class='ident'>values</span>.<span class='ident'>iter</span>().<span class='ident'>fold</span>(<span class='number'>0</span>, <span class='op'>|</span><span class='ident'>acc</span>, <span class='kw-2'>&amp;</span><span class='ident'>v</span><span class='op'>|</span> <span class='ident'>acc</span> <span class='op'>+</span> <span class='ident'>v</span>)
 }
 </pre>
 
@@ -94,14 +144,14 @@ fully computed.</p>
 argument, or start with some initial state. The algorithm produce one or multiple
 output values during the execution, possibly aborting anywhere in the middle.
 Algorithms where leafs in the problem tree represent a complete solution to the
-problem (Unless the leave represent a dead end that is not a solution and does
+problem (unless the leaf represent a dead end that is not a solution and does
 not spawn any subtasks), for example nqueens and sudoku solvers, have this style.
 Characteristics of the search style is that they can produce multiple results
 and can abort before all tasks in the tree have been computed.</p>
 
 <h2 id="example-of-search-style" class='section-header'><a
                            href="#example-of-search-style">Example of search style</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>ForkPool</span>,<span class='ident'>TaskResult</span>,<span class='ident'>Fork</span>,<span class='ident'>AlgoStyle</span>};
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>ForkPool</span>,<span class='ident'>TaskResult</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>type</span> <span class='ident'>Queen</span> <span class='op'>=</span> <span class='ident'>usize</span>;
 <span class='kw'>type</span> <span class='ident'>Board</span> <span class='op'>=</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Queen</span><span class='op'>&gt;</span>;
@@ -112,12 +162,17 @@ and can abort before all tasks in the tree have been computed.</p>
     <span class='kw'>let</span> <span class='ident'>empty</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
 
     <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>with_threads</span>(<span class='number'>4</span>);
-    <span class='kw'>let</span> <span class='ident'>par_solutions_port</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>schedule</span>(<span class='ident'>nqueens_task</span>, (<span class='ident'>empty</span>, <span class='ident'>n</span>));
+    <span class='kw'>let</span> <span class='ident'>queenpool</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>init_algorithm</span>(<span class='ident'>Algorithm</span> {
+        <span class='ident'>fun</span>: <span class='ident'>nqueens_task</span>,
+        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Search</span>,
+    });
+
+    <span class='kw'>let</span> <span class='ident'>job</span> <span class='op'>=</span> <span class='ident'>queenpool</span>.<span class='ident'>schedule</span>((<span class='ident'>empty</span>, <span class='ident'>n</span>));
 
     <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>solutions</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Board</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
     <span class='kw'>loop</span> {
-        <span class='kw'>match</span> <span class='ident'>par_solutions_port</span>.<span class='ident'>recv</span>() {
-            <span class='prelude-val'>Err</span>(..) <span class='op'>=&gt;</span> <span class='kw'>break</span>, <span class='comment'>// Channel is closed to indicate termination</span>
+        <span class='kw'>match</span> <span class='ident'>job</span>.<span class='ident'>recv</span>() {
+            <span class='prelude-val'>Err</span>(..) <span class='op'>=&gt;</span> <span class='kw'>break</span>, <span class='comment'>// Job has completed</span>
             <span class='prelude-val'>Ok</span>(<span class='ident'>board</span>) <span class='op'>=&gt;</span> <span class='ident'>solutions</span>.<span class='ident'>push</span>(<span class='ident'>board</span>),
         };
     }
@@ -138,11 +193,7 @@ and can abort before all tasks in the tree have been computed.</p>
                 <span class='ident'>fork_args</span>.<span class='ident'>push</span>((<span class='ident'>q2</span>, <span class='ident'>n</span>));
             }
         }
-        <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='ident'>Fork</span>{
-            <span class='ident'>fun</span>: <span class='ident'>nqueens_task</span>,
-            <span class='ident'>args</span>: <span class='ident'>fork_args</span>,
-            <span class='ident'>join</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Search</span>
-        })
+        <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='ident'>fork_args</span>, <span class='prelude-val'>None</span>)
     }
 }
 
@@ -175,21 +226,42 @@ their input argument instead of producing any output.</p>
 
 <h1 id="tasks" class='section-header'><a
                            href="#tasks">Tasks</a></h1>
-<p>The small jobs that are executed and can choose to fork or to return a value is the
-TaskFun. A TaskFun can NEVER block, because that would block the kernel thread
+<p>The small units that are executed and can choose to fork or to return a value is the
+<code>TaskFun</code>. A TaskFun can NEVER block, because that would block the kernel thread
 it&#39;s being executed on. Instead it should decide if it&#39;s done calculating or need
 to fork. This decision is taken in the return value to indicate to the user
 that a TaskFun need to return before anything can happen.</p>
 
 <p>A TaskFun return a <code>TaskResult</code>. It can be <code>TaskResult::Done(value)</code> if it&#39;s done
-calculating. It can be <code>TaskResult::Fork(fork)</code> if it needs to fork.</p>
+calculating. It can be <code>TaskResult::Fork(args)</code> if it needs to fork.</p>
+
+<h1 id="todo" class='section-header'><a
+                           href="#todo">TODO</a></h1>
+<ul>
+<li>[ ] Make mutation style algorithms work without giving join function</li>
+<li>[ ] Implement a sorting algorithm. Quicksort?</li>
+<li>[ ] Remove need to return None on fork with NoArg</li>
+<li>[ ] Make it possible to use algorithms with different Arg &amp; Ret on same pool.</li>
+<li>[ ] Make ForkJoin work in stable Rust.</li>
+<li>[ ] Remove mutex around channel in search style.</li>
+</ul>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                     <tr class=' module-item'>
-                        <td><a class='struct' href='struct.Fork.html'
-                               title='forkjoin::Fork'>Fork</a></td>
+                        <td><a class='struct' href='struct.AlgoOnPool.html'
+                               title='forkjoin::AlgoOnPool'>AlgoOnPool</a></td>
                         <td class='docblock short'>
-                             <p>Struct describing how a <code>Task</code> want to fork into multiple subtasks.</p>
+                             <p>A handle for a specific <code>Algorithm</code> running on a <code>ForkPool</code>.
+Acquired from <code>ForkPool::init_algorithm</code>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Algorithm.html'
+                               title='forkjoin::Algorithm'>Algorithm</a></td>
+                        <td class='docblock short'>
+                             <p>The representation of a specific algorithm to use the ForkJoin library.</p>
 
                         </td>
                     </tr>
@@ -200,6 +272,17 @@ calculating. It can be <code>TaskResult::Fork(fork)</code> if it needs to fork.<
                         <td class='docblock short'>
                              <p>Main struct of the ForkJoin library.
 Represents a pool of threads implementing a work stealing algorithm.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.Job.html'
+                               title='forkjoin::Job'>Job</a></td>
+                        <td class='docblock short'>
+                             <p>The handle for a computation. Can be used to fetch results of the computation.
+Upon drop it will wait for the entire computation to complete if it&#39;s still executing.
+Algorithm termination is detected by the <code>try_recv</code> and <code>recv</code> methods returning a <code>ResultError</code></p>
 
                         </td>
                     </tr>
@@ -217,7 +300,8 @@ Represents a pool of threads implementing a work stealing algorithm.</p>
                         <td><a class='struct' href='struct.Task.html'
                                title='forkjoin::Task'>Task</a></td>
                         <td class='docblock short'>
-                             
+                             <p>Internal representation of a task.</p>
+
                         </td>
                     </tr>
                 </table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
@@ -232,6 +316,15 @@ Represents a pool of threads implementing a work stealing algorithm.</p>
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='enum' href='enum.ResultError.html'
+                               title='forkjoin::ResultError'>ResultError</a></td>
+                        <td class='docblock short'>
+                             <p>Enum indicating there was a problem fetching a result from a job.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='enum' href='enum.ResultReceiver.html'
                                title='forkjoin::ResultReceiver'>ResultReceiver</a></td>
                         <td class='docblock short'>
@@ -241,10 +334,10 @@ Represents a pool of threads implementing a work stealing algorithm.</p>
                     </tr>
                 
                     <tr class=' module-item'>
-                        <td><a class='enum' href='enum.SupervisorMsg.html'
-                               title='forkjoin::SupervisorMsg'>SupervisorMsg</a></td>
+                        <td><a class='enum' href='enum.SummaStyle.html'
+                               title='forkjoin::SummaStyle'>SummaStyle</a></td>
                         <td class='docblock short'>
-                             <p>Messages from <code>ForkPool</code> and <code>WorkerThread</code> to the <code>PoolSupervisor</code>.</p>
+                             <p>Enum indicating what type of join function an <code>Algorithm</code> will use.</p>
 
                         </td>
                     </tr>
@@ -254,15 +347,6 @@ Represents a pool of threads implementing a work stealing algorithm.</p>
                                title='forkjoin::TaskResult'>TaskResult</a></td>
                         <td class='docblock short'>
                              <p>Return values from tasks. Represent a computed value or a fork of the algorithm.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.WorkerMsg.html'
-                               title='forkjoin::WorkerMsg'>WorkerMsg</a></td>
-                        <td class='docblock short'>
-                             <p>Messages from the <code>PoolSupervisor</code> to <code>WorkerThread</code>s</p>
 
                         </td>
                     </tr>
@@ -283,7 +367,17 @@ Your task functions must have this signature</p>
                                title='forkjoin::TaskJoin'>TaskJoin</a></td>
                         <td class='docblock short'>
                              <p>Type definition of functions joining together forked results.
-Only used in <code>AlgoStyle::Summa</code> algorithms.</p>
+Only used in <code>AlgoStyle::Summa</code> algorithms with <code>SummaStyle::NoArg</code>.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.TaskJoinArg.html'
+                               title='forkjoin::TaskJoinArg'>TaskJoinArg</a></td>
+                        <td class='docblock short'>
+                             <p>Similar to <code>TaskJoin</code> but takes an extra argument sent directly
+from the task in algorithms with <code>SummaStyle::Arg</code>.</p>
 
                         </td>
                     </tr>

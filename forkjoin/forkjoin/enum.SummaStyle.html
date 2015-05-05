@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `AlgoStyle` enum in crate `forkjoin`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, AlgoStyle">
+    <meta name="description" content="API documentation for the Rust `SummaStyle` enum in crate `forkjoin`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, SummaStyle">
 
-    <title>forkjoin::AlgoStyle - Rust</title>
+    <title>forkjoin::SummaStyle - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>forkjoin</a></p><script>window.sidebarCurrent = {name: 'AlgoStyle', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>forkjoin</a></p><script>window.sidebarCurrent = {name: 'SummaStyle', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -41,27 +41,18 @@
     </nav>
 
     <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>AlgoStyle</a></span><span class='out-of-band'><span id='render-detail'>
+<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>SummaStyle</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-1825' class='srclink' href='../src/forkjoin/lib.rs.html#278-294' title='goto source code'>[src]</a></span></h1>
-<pre class='rust enum'>pub enum AlgoStyle&lt;Ret&gt; {
-    Summa(<a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;),
-    Search,
-}</pre><div class='docblock'><p>Enum representing the style of the executed algorithm.</p>
+        </span><a id='src-1855' class='srclink' href='../src/forkjoin/lib.rs.html#299-306' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum SummaStyle&lt;Ret&gt; {
+    NoArg(<a class='type' href='../forkjoin/type.TaskJoin.html' title='forkjoin::TaskJoin'>TaskJoin</a>&lt;Ret&gt;),
+    Arg(<a class='type' href='../forkjoin/type.TaskJoinArg.html' title='forkjoin::TaskJoinArg'>TaskJoinArg</a>&lt;Ret&gt;),
+}</pre><div class='docblock'><p>Enum indicating what type of join function an <code>Algorithm</code> will use.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Summa'><code>Summa</code></td><td><div class='docblock'><p>A <code>Summa</code> style algorithm join together the results of the individual nodes
-in the problem tree to finally form one result for the entire computation.</p>
-
-<p>Examples of this style include recursively computing fibbonacci numbers
-and summing binary trees.</p>
-
-<p>Takes a <code>SummaStyle</code> to indicate what type of join function to use.</p>
-</div></td></tr><tr><td id='variant.Search'><code>Search</code></td><td><div class='docblock'><p>A <code>Search</code> style algoritm return their results to the listener directly upon a
-<code>TaskResult::Done</code>.</p>
-
-<p>Examples of this style include sudoku solvers and nqueens where a node can
-represent a complete solution.</p>
-</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;Ret&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='enum' href='../forkjoin/enum.AlgoStyle.html' title='forkjoin::AlgoStyle'>AlgoStyle</a>&lt;Ret&gt;</code></h3><div class='impl-items'></div><h3 class='impl'><code>impl&lt;Ret&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../forkjoin/enum.AlgoStyle.html' title='forkjoin::AlgoStyle'>AlgoStyle</a>&lt;Ret&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../forkjoin/enum.AlgoStyle.html' title='forkjoin::AlgoStyle'>AlgoStyle</a>&lt;Ret&gt;</code></h4>
+<table><tr><td id='variant.NoArg'><code>NoArg</code></td><td><div class='docblock'><p>No extra argument is passed to the join function, only the resulting values of all subtasks</p>
+</div></td></tr><tr><td id='variant.Arg'><code>Arg</code></td><td><div class='docblock'><p>Together with the result values of the subtasks, the join function will also
+be passed an argument sent directly from the <code>TaskFun</code>.</p>
+</div></td></tr></table><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;Ret&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;</code></h3><div class='impl-items'></div><h3 class='impl'><code>impl&lt;Ret&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;</code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;</code></h4>
 <h4 id='method.clone_from' class='method'><code>fn <a href='http://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code></h4>
 </div></section>
     <section id='search' class="content hidden"></section>

@@ -43,14 +43,15 @@
     <section id='main' class="content struct">
 <h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>forkjoin</a>::<wbr><a class='struct' href=''>Task</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-1455' class='srclink' href='../src/forkjoin/lib.rs.html#180-184' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-1795' class='srclink' href='../src/forkjoin/lib.rs.html#252-256' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct Task&lt;Arg: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>, Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
-    pub fun: <a class='type' href='../forkjoin/type.TaskFun.html' title='forkjoin::TaskFun'>TaskFun</a>&lt;Arg, Ret&gt;,
+    pub algo: <a class='struct' href='../forkjoin/struct.Algorithm.html' title='forkjoin::Algorithm'>Algorithm</a>&lt;Arg, Ret&gt;,
     pub arg: Arg,
     pub join: <a class='enum' href='../forkjoin/enum.ResultReceiver.html' title='forkjoin::ResultReceiver'>ResultReceiver</a>&lt;Ret&gt;,
-}</pre><h2 class='fields'>Fields</h2>
+}</pre><div class='docblock'><p>Internal representation of a task.</p>
+</div><h2 class='fields'>Fields</h2>
 <table><tr class='stab '>
-                                  <td id='structfield.fun'><code>fun</code></td><td></td></tr><tr class='stab '>
+                                  <td id='structfield.algo'><code>algo</code></td><td></td></tr><tr class='stab '>
                                   <td id='structfield.arg'><code>arg</code></td><td></td></tr><tr class='stab '>
                                   <td id='structfield.join'><code>join</code></td><td></td></tr></table></section>
     <section id='search' class="content hidden"></section>

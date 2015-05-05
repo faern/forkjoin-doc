@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `WorkerMsg` enum in crate `forkjoin`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, WorkerMsg">
+    <meta name="description" content="API documentation for the Rust `TaskJoinArg` type in crate `forkjoin`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, TaskJoinArg">
 
-    <title>forkjoin::WorkerMsg - Rust</title>
+    <title>forkjoin::TaskJoinArg - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -26,7 +26,7 @@
 
     <section class="sidebar">
         
-        <p class='location'><a href='index.html'>forkjoin</a></p><script>window.sidebarCurrent = {name: 'WorkerMsg', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='index.html'>forkjoin</a></p><script>window.sidebarCurrent = {name: 'TaskJoinArg', ty: 'type', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </section>
 
     <nav class="sub">
@@ -40,18 +40,13 @@
         </form>
     </nav>
 
-    <section id='main' class="content enum">
-<h1 class='fqn'><span class='in-band'>Enum <a href='index.html'>forkjoin</a>::<wbr><a class='enum' href=''>WorkerMsg</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content type">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>forkjoin</a>::<wbr><a class='type' href=''>TaskJoinArg</a></span><span class='out-of-band'><span id='render-detail'>
             <a id="toggle-all-docs" href="#" title="collapse all docs">[&minus;]</a>
-        </span><a id='src-1584' class='srclink' href='../src/forkjoin/lib.rs.html#264-269' title='goto source code'>[src]</a></span></h1>
-<pre class='rust enum'>pub enum WorkerMsg&lt;Arg: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a>, Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
-    Schedule(<a class='struct' href='../forkjoin/struct.Task.html' title='forkjoin::Task'>Task</a>&lt;Arg, Ret&gt;),
-    Steal,
-}</pre><div class='docblock'><p>Messages from the <code>PoolSupervisor</code> to <code>WorkerThread</code>s</p>
-</div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Schedule'><code>Schedule</code></td><td><div class='docblock'><p>A new <code>Task</code> to be scheduled for execution by the <code>WorkerThread</code></p>
-</div></td></tr><tr><td id='variant.Steal'><code>Steal</code></td><td><div class='docblock'><p>Tell the <code>WorkerThread</code> to simply try to steal from the other <code>WorkerThread</code>s</p>
-</div></td></tr></table></section>
+        </span><a id='src-1781' class='srclink' href='../src/forkjoin/lib.rs.html#249' title='goto source code'>[src]</a></span></h1>
+<pre class='rust typedef'>type TaskJoinArg&lt;Ret&gt; = fn(&amp;Ret, <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[Ret]</a>) -&gt; Ret;</pre><div class='docblock'><p>Similar to <code>TaskJoin</code> but takes an extra argument sent directly
+from the task in algorithms with <code>SummaStyle::Arg</code>.</p>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
