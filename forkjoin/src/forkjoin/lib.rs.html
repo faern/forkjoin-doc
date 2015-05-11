@@ -525,11 +525,6 @@
 <span id="483">483</span>
 <span id="484">484</span>
 <span id="485">485</span>
-<span id="486">486</span>
-<span id="487">487</span>
-<span id="488">488</span>
-<span id="489">489</span>
-<span id="490">490</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 Linus Färnstrand</span>
 <span class='comment'>//</span>
@@ -939,12 +934,7 @@
     <span class='doccomment'>/// Don&#39;t allow a job to be dropped while it&#39;s still computing.</span>
     <span class='doccomment'>/// Block and fetch all results.</span>
     <span class='kw'>fn</span> <span class='ident'>drop</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='self'>self</span>) {
-        <span class='kw'>loop</span> {
-            <span class='kw'>match</span> <span class='self'>self</span>.<span class='ident'>port</span>.<span class='ident'>recv</span>() {
-                <span class='prelude-val'>Err</span>(_) <span class='op'>=&gt;</span> <span class='kw'>break</span>,
-                <span class='prelude-val'>Ok</span>(_) <span class='op'>=&gt;</span> (),
-            }
-        }
+        <span class='kw'>while</span> <span class='kw'>let</span> <span class='prelude-val'>Ok</span>(_) <span class='op'>=</span> <span class='self'>self</span>.<span class='ident'>port</span>.<span class='ident'>recv</span>() {}
     }
 }
 
