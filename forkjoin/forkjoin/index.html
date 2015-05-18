@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/forkjoin/lib.rs.html#15-485' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/forkjoin/lib.rs.html#15-505' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'>
 <h1 id="forkjoin" class='section-header'><a
                            href="#forkjoin">ForkJoin</a></h1>
@@ -77,7 +77,7 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
 
 <h2 id="example-of-summa-style-(summastyle::noarg)" class='section-header'><a
                            href="#example-of-summa-style-(summastyle::noarg)">Example of summa style (<code>SummaStyle::NoArg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>fn</span> <span class='ident'>fib_30_with_4_threads</span>() {
     <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>with_threads</span>(<span class='number'>4</span>);
@@ -91,7 +91,7 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
     <span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='number'>1346269</span>, <span class='ident'>result</span>);
 }
 
-<span class='kw'>fn</span> <span class='ident'>fib_task</span>(<span class='ident'>n</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='ident'>usize</span>, <span class='ident'>usize</span><span class='op'>&gt;</span> {
+<span class='kw'>fn</span> <span class='ident'>fib_task</span>(<span class='ident'>n</span>: <span class='ident'>usize</span>, _: <span class='ident'>FJData</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='ident'>usize</span>, <span class='ident'>usize</span><span class='op'>&gt;</span> {
     <span class='kw'>if</span> <span class='ident'>n</span> <span class='op'>&lt;</span> <span class='number'>2</span> {
         <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='number'>1</span>)
     } <span class='kw'>else</span> {
@@ -106,7 +106,7 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
 
 <h2 id="example-of-summa-style-(summastyle::arg)" class='section-header'><a
                            href="#example-of-summa-style-(summastyle::arg)">Example of summa style (<code>SummaStyle::Arg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>struct</span> <span class='ident'>Tree</span> {
     <span class='ident'>value</span>: <span class='ident'>usize</span>,
@@ -123,9 +123,11 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
     <span class='ident'>job</span>.<span class='ident'>recv</span>().<span class='ident'>unwrap</span>()
 }
 
-<span class='kw'>fn</span> <span class='ident'>sum_tree_task</span>(<span class='ident'>t</span>: <span class='kw-2'>&amp;</span><span class='ident'>Tree</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Tree</span>, <span class='ident'>usize</span><span class='op'>&gt;</span> {
+<span class='kw'>fn</span> <span class='ident'>sum_tree_task</span>(<span class='ident'>t</span>: <span class='kw-2'>&amp;</span><span class='ident'>Tree</span>, <span class='ident'>fj</span>: <span class='ident'>FJData</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Tree</span>, <span class='ident'>usize</span><span class='op'>&gt;</span> {
     <span class='kw'>if</span> <span class='ident'>t</span>.<span class='ident'>children</span>.<span class='ident'>is_empty</span>() {
         <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='ident'>t</span>.<span class='ident'>value</span>)
+    } <span class='kw'>else</span> <span class='kw'>if</span> <span class='ident'>fj</span>.<span class='ident'>depth</span> <span class='op'>&gt;</span> <span class='ident'>fj</span>.<span class='ident'>workers</span> { <span class='comment'>// Bad example of serial threshold</span>
+        <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='ident'>sum_tree_seq</span>(<span class='ident'>t</span>))
     } <span class='kw'>else</span> {
         <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>fork_args</span>: <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='kw-2'>&amp;</span><span class='ident'>Tree</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='macro'>vec</span><span class='macro'>!</span>[];
         <span class='kw'>for</span> <span class='ident'>c</span> <span class='kw'>in</span> <span class='ident'>t</span>.<span class='ident'>children</span>.<span class='ident'>iter</span>() {
@@ -133,6 +135,10 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
         }
         <span class='ident'>TaskResult</span>::<span class='ident'>Fork</span>(<span class='ident'>fork_args</span>, <span class='prelude-val'>Some</span>(<span class='ident'>t</span>.<span class='ident'>value</span>)) <span class='comment'>// Pass current nodes value to join</span>
     }
+}
+
+<span class='kw'>fn</span> <span class='ident'>sum_tree_seq</span>(<span class='ident'>t</span>: <span class='kw-2'>&amp;</span><span class='ident'>Tree</span>) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
+    <span class='ident'>t</span>.<span class='ident'>value</span> <span class='op'>+</span> <span class='ident'>t</span>.<span class='ident'>children</span>.<span class='ident'>iter</span>().<span class='ident'>fold</span>(<span class='number'>0</span>, <span class='op'>|</span><span class='ident'>acc</span>, <span class='ident'>t2</span><span class='op'>|</span> <span class='ident'>acc</span> <span class='op'>+</span> <span class='ident'>sum_tree_seq</span>(<span class='ident'>t2</span>))
 }
 
 <span class='kw'>fn</span> <span class='ident'>sum_tree_join</span>(<span class='ident'>value</span>: <span class='kw-2'>&amp;</span><span class='ident'>usize</span>, <span class='ident'>values</span>: <span class='kw-2'>&amp;</span>[<span class='ident'>usize</span>]) <span class='op'>-&gt;</span> <span class='ident'>usize</span> {
@@ -153,7 +159,7 @@ and can abort before all tasks in the tree have been computed.</p>
 
 <h2 id="example-of-search-style" class='section-header'><a
                            href="#example-of-search-style">Example of search style</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>ForkPool</span>,<span class='ident'>TaskResult</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>Algorithm</span>};
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>ForkPool</span>,<span class='ident'>TaskResult</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>type</span> <span class='ident'>Queen</span> <span class='op'>=</span> <span class='ident'>usize</span>;
 <span class='kw'>type</span> <span class='ident'>Board</span> <span class='op'>=</span> <span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Queen</span><span class='op'>&gt;</span>;
@@ -182,7 +188,7 @@ and can abort before all tasks in the tree have been computed.</p>
     <span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;Found {} solutions to nqueens({}x{})&quot;</span>, <span class='ident'>num_solutions</span>, <span class='ident'>n</span>, <span class='ident'>n</span>);
 }
 
-<span class='kw'>fn</span> <span class='ident'>nqueens_task</span>((<span class='ident'>q</span>, <span class='ident'>n</span>): (<span class='ident'>Board</span>, <span class='ident'>usize</span>)) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span>(<span class='ident'>Board</span>,<span class='ident'>usize</span>), <span class='ident'>Board</span><span class='op'>&gt;</span> {
+<span class='kw'>fn</span> <span class='ident'>nqueens_task</span>((<span class='ident'>q</span>, <span class='ident'>n</span>): (<span class='ident'>Board</span>, <span class='ident'>usize</span>), <span class='ident'>fj</span>: <span class='ident'>FJData</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span>(<span class='ident'>Board</span>,<span class='ident'>usize</span>), <span class='ident'>Board</span><span class='op'>&gt;</span> {
     <span class='kw'>if</span> <span class='ident'>q</span>.<span class='ident'>len</span>() <span class='op'>==</span> <span class='ident'>n</span> {
         <span class='ident'>TaskResult</span>::<span class='ident'>Done</span>(<span class='ident'>q</span>)
     } <span class='kw'>else</span> {
@@ -264,6 +270,16 @@ Acquired from <code>ForkPool::init_algorithm</code>.</p>
                                title='forkjoin::Algorithm'>Algorithm</a></td>
                         <td class='docblock short'>
                              <p>The representation of a specific algorithm to use the ForkJoin library.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.FJData.html'
+                               title='forkjoin::FJData'>FJData</a></td>
+                        <td class='docblock short'>
+                             <p>Fork-join Data. Contains data about the currently executed job.
+Can be used by <code>TaskFun</code> to determine whether or not to go over to serial code.</p>
 
                         </td>
                     </tr>
