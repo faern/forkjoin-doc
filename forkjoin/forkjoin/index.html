@@ -61,29 +61,29 @@ and implemented as part of a master&#39;s thesis. Repository hosted at <a href="
 <p>This library has been developed to accommodate the needs of three types of
 algorithms that all fit very well for fork-join parallelism.</p>
 
-<h1 id="summa-style" class='section-header'><a
-                           href="#summa-style">Summa style</a></h1>
-<p>Summa style is where the algorithm receive an argument, recursively compute a value
+<h1 id="reduce-style" class='section-header'><a
+                           href="#reduce-style">Reduce style</a></h1>
+<p>Reduce style is where the algorithm receive an argument, recursively compute a value
 from this argument and return one answer. Examples of this style include recursively
 finding the n:th Fibonacci number and summing of tree structures.
 Characteristics of this style is that the algorithm does not need to mutate its
 argument and the resulting value is only available after every subtask has been
 fully computed.</p>
 
-<p>In summa style algorithms the return values of each subtask is passed to a special
+<p>In reduce style algorithms the return values of each subtask is passed to a special
 join function that is executed when all subtasks have completed.
 To this join function an extra argument can be sent directly from the task if the algorithm
-has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
+has has <code>ReduceStyle::Arg</code>. This can be seen in the examples here.</p>
 
-<h2 id="example-of-summa-style-(summastyle::noarg)" class='section-header'><a
-                           href="#example-of-summa-style-(summastyle::noarg)">Example of summa style (<code>SummaStyle::NoArg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
+<h2 id="example-of-reduce-style-(reducestyle::noarg)" class='section-header'><a
+                           href="#example-of-reduce-style-(reducestyle::noarg)">Example of reduce style (<code>ReduceStyle::NoArg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>ReduceStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>fn</span> <span class='ident'>fib_30_with_4_threads</span>() {
     <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>with_threads</span>(<span class='number'>4</span>);
     <span class='kw'>let</span> <span class='ident'>fibpool</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>init_algorithm</span>(<span class='ident'>Algorithm</span> {
         <span class='ident'>fun</span>: <span class='ident'>fib_task</span>,
-        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Summa</span>(<span class='ident'>SummaStyle</span>::<span class='ident'>NoArg</span>(<span class='ident'>fib_join</span>)),
+        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Reduce</span>(<span class='ident'>ReduceStyle</span>::<span class='ident'>NoArg</span>(<span class='ident'>fib_join</span>)),
     });
 
     <span class='kw'>let</span> <span class='ident'>job</span> <span class='op'>=</span> <span class='ident'>fibpool</span>.<span class='ident'>schedule</span>(<span class='number'>30</span>);
@@ -104,9 +104,9 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
 }
 </pre>
 
-<h2 id="example-of-summa-style-(summastyle::arg)" class='section-header'><a
-                           href="#example-of-summa-style-(summastyle::arg)">Example of summa style (<code>SummaStyle::Arg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
-<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>SummaStyle</span>,<span class='ident'>Algorithm</span>};
+<h2 id="example-of-reduce-style-(reducestyle::arg)" class='section-header'><a
+                           href="#example-of-reduce-style-(reducestyle::arg)">Example of reduce style (<code>ReduceStyle::Arg</code>)</a></h2><pre id='rust-example-rendered' class='rust '>
+<span class='kw'>use</span> <span class='ident'>forkjoin</span>::{<span class='ident'>FJData</span>,<span class='ident'>TaskResult</span>,<span class='ident'>ForkPool</span>,<span class='ident'>AlgoStyle</span>,<span class='ident'>ReduceStyle</span>,<span class='ident'>Algorithm</span>};
 
 <span class='kw'>struct</span> <span class='ident'>Tree</span> {
     <span class='ident'>value</span>: <span class='ident'>usize</span>,
@@ -117,7 +117,7 @@ has has <code>SummaStyle::Arg</code>. This can be seen in the examples here.</p>
     <span class='kw'>let</span> <span class='ident'>forkpool</span> <span class='op'>=</span> <span class='ident'>ForkPool</span>::<span class='ident'>new</span>();
     <span class='kw'>let</span> <span class='ident'>sumpool</span> <span class='op'>=</span> <span class='ident'>forkpool</span>.<span class='ident'>init_algorithm</span>(<span class='ident'>Algorithm</span> {
         <span class='ident'>fun</span>: <span class='ident'>sum_tree_task</span>,
-        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Summa</span>(<span class='ident'>SummaStyle</span>::<span class='ident'>Arg</span>(<span class='ident'>sum_tree_join</span>)),
+        <span class='ident'>style</span>: <span class='ident'>AlgoStyle</span>::<span class='ident'>Reduce</span>(<span class='ident'>ReduceStyle</span>::<span class='ident'>Arg</span>(<span class='ident'>sum_tree_join</span>)),
     });
     <span class='kw'>let</span> <span class='ident'>job</span> <span class='op'>=</span> <span class='ident'>sumpool</span>.<span class='ident'>schedule</span>(<span class='ident'>t</span>);
     <span class='ident'>job</span>.<span class='ident'>recv</span>().<span class='ident'>unwrap</span>()
@@ -334,6 +334,15 @@ Algorithm termination is detected by the <code>try_recv</code> and <code>recv</c
                     </tr>
                 
                     <tr class=' module-item'>
+                        <td><a class='enum' href='enum.ReduceStyle.html'
+                               title='forkjoin::ReduceStyle'>ReduceStyle</a></td>
+                        <td class='docblock short'>
+                             <p>Enum indicating what type of join function an <code>Algorithm</code> will use.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
                         <td><a class='enum' href='enum.ResultError.html'
                                title='forkjoin::ResultError'>ResultError</a></td>
                         <td class='docblock short'>
@@ -347,15 +356,6 @@ Algorithm termination is detected by the <code>try_recv</code> and <code>recv</c
                                title='forkjoin::ResultReceiver'>ResultReceiver</a></td>
                         <td class='docblock short'>
                              <p>Enum describing what to do with results of <code>Task</code>s and <code>JoinBarrier</code>s.</p>
-
-                        </td>
-                    </tr>
-                
-                    <tr class=' module-item'>
-                        <td><a class='enum' href='enum.SummaStyle.html'
-                               title='forkjoin::SummaStyle'>SummaStyle</a></td>
-                        <td class='docblock short'>
-                             <p>Enum indicating what type of join function an <code>Algorithm</code> will use.</p>
 
                         </td>
                     </tr>
@@ -385,7 +385,7 @@ Your task functions must have this signature</p>
                                title='forkjoin::TaskJoin'>TaskJoin</a></td>
                         <td class='docblock short'>
                              <p>Type definition of functions joining together forked results.
-Only used in <code>AlgoStyle::Summa</code> algorithms with <code>SummaStyle::NoArg</code>.</p>
+Only used in <code>AlgoStyle::Reduce</code> algorithms with <code>ReduceStyle::NoArg</code>.</p>
 
                         </td>
                     </tr>
@@ -395,7 +395,7 @@ Only used in <code>AlgoStyle::Summa</code> algorithms with <code>SummaStyle::NoA
                                title='forkjoin::TaskJoinArg'>TaskJoinArg</a></td>
                         <td class='docblock short'>
                              <p>Similar to <code>TaskJoin</code> but takes an extra argument sent directly
-from the task in algorithms with <code>SummaStyle::Arg</code>.</p>
+from the task in algorithms with <code>ReduceStyle::Arg</code>.</p>
 
                         </td>
                     </tr>

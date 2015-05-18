@@ -47,17 +47,17 @@
             </a>
         </span><a id='src-2008' class='srclink' href='../src/forkjoin/lib.rs.html#294-310' title='goto source code'>[src]</a></span></h1>
 <pre class='rust enum'>pub enum AlgoStyle&lt;Ret&gt; {
-    Summa(<a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;),
+    Reduce(<a class='enum' href='../forkjoin/enum.ReduceStyle.html' title='forkjoin::ReduceStyle'>ReduceStyle</a>&lt;Ret&gt;),
     Search,
 }</pre><div class='docblock'><p>Enum representing the style of the executed algorithm.</p>
 </div><h2 class='variants'>Variants</h2>
-<table><tr><td id='variant.Summa'><code>Summa</code></td><td><div class='docblock'><p>A <code>Summa</code> style algorithm join together the results of the individual nodes
+<table><tr><td id='variant.Reduce'><code>Reduce</code></td><td><div class='docblock'><p>A <code>Reduce</code> style algorithm join together the results of the individual nodes
 in the problem tree to finally form one result for the entire computation.</p>
 
 <p>Examples of this style include recursively computing fibbonacci numbers
 and summing binary trees.</p>
 
-<p>Takes a <code>SummaStyle</code> to indicate what type of join function to use.</p>
+<p>Takes a <code>ReduceStyle</code> to indicate what type of join function to use.</p>
 </div></td></tr><tr><td id='variant.Search'><code>Search</code></td><td><div class='docblock'><p>A <code>Search</code> style algoritm return their results to the listener directly upon a
 <code>TaskResult::Done</code>.</p>
 

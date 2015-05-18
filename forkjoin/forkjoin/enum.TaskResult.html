@@ -56,12 +56,12 @@ problem tree of the computation.</p>
 
 <p>If the algorithm style is <code>AlgoStyle::Search</code> the value in <code>Done</code> will be sent
 directly to the <code>Job</code> held by the submitter of the computation.
-If the algorithm style is <code>AlgoStyle::Summa</code> the value in <code>Done</code> will be inserted
+If the algorithm style is <code>AlgoStyle::Reduce</code> the value in <code>Done</code> will be inserted
 into a join barrier and later passed to the algorithms join function when all
 subtasks have completed execution.</p>
 </div></td></tr><tr><td id='variant.Fork'><code>Fork</code></td><td><div class='docblock'><p>Return this from <code>TaskFun</code> to indicate that the algorithm wants to fork.
 Takes a list of arguments to fork on. One subtask will be created for each argument.
-The second value is only used by <code>SummaStyle::Arg</code>-algorithms to send a value directly
+The second value is only used by <code>ReduceStyle::Arg</code>-algorithms to send a value directly
 to the <code>TaskJoinArg</code>, passing None in such algorithms will yield a panic.</p>
 </div></td></tr></table></section>
     <section id='search' class="content hidden"></section>

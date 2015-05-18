@@ -573,30 +573,30 @@
 <span class='doccomment'>//! This library has been developed to accommodate the needs of three types of</span>
 <span class='doccomment'>//! algorithms that all fit very well for fork-join parallelism.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! # Summa style</span>
+<span class='doccomment'>//! # Reduce style</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! Summa style is where the algorithm receive an argument, recursively compute a value</span>
+<span class='doccomment'>//! Reduce style is where the algorithm receive an argument, recursively compute a value</span>
 <span class='doccomment'>//! from this argument and return one answer. Examples of this style include recursively</span>
 <span class='doccomment'>//! finding the n:th Fibonacci number and summing of tree structures.</span>
 <span class='doccomment'>//! Characteristics of this style is that the algorithm does not need to mutate its</span>
 <span class='doccomment'>//! argument and the resulting value is only available after every subtask has been</span>
 <span class='doccomment'>//! fully computed.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! In summa style algorithms the return values of each subtask is passed to a special</span>
+<span class='doccomment'>//! In reduce style algorithms the return values of each subtask is passed to a special</span>
 <span class='doccomment'>//! join function that is executed when all subtasks have completed.</span>
 <span class='doccomment'>//! To this join function an extra argument can be sent directly from the task if the algorithm</span>
-<span class='doccomment'>//! has has `SummaStyle::Arg`. This can be seen in the examples here.</span>
+<span class='doccomment'>//! has has `ReduceStyle::Arg`. This can be seen in the examples here.</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! ## Example of summa style (`SummaStyle::NoArg`)</span>
+<span class='doccomment'>//! ## Example of reduce style (`ReduceStyle::NoArg`)</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,SummaStyle,Algorithm};</span>
+<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! fn fib_30_with_4_threads() {</span>
 <span class='doccomment'>//!     let forkpool = ForkPool::with_threads(4);</span>
 <span class='doccomment'>//!     let fibpool = forkpool.init_algorithm(Algorithm {</span>
 <span class='doccomment'>//!         fun: fib_task,</span>
-<span class='doccomment'>//!         style: AlgoStyle::Summa(SummaStyle::NoArg(fib_join)),</span>
+<span class='doccomment'>//!         style: AlgoStyle::Reduce(ReduceStyle::NoArg(fib_join)),</span>
 <span class='doccomment'>//!     });</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//!     let job = fibpool.schedule(30);</span>
@@ -617,10 +617,10 @@
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//! ```</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! ## Example of summa style (`SummaStyle::Arg`)</span>
+<span class='doccomment'>//! ## Example of reduce style (`ReduceStyle::Arg`)</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,SummaStyle,Algorithm};</span>
+<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! struct Tree {</span>
 <span class='doccomment'>//!     value: usize,</span>
@@ -631,7 +631,7 @@
 <span class='doccomment'>//!     let forkpool = ForkPool::new();</span>
 <span class='doccomment'>//!     let sumpool = forkpool.init_algorithm(Algorithm {</span>
 <span class='doccomment'>//!         fun: sum_tree_task,</span>
-<span class='doccomment'>//!         style: AlgoStyle::Summa(SummaStyle::Arg(sum_tree_join)),</span>
+<span class='doccomment'>//!         style: AlgoStyle::Reduce(ReduceStyle::Arg(sum_tree_join)),</span>
 <span class='doccomment'>//!     });</span>
 <span class='doccomment'>//!     let job = sumpool.schedule(t);</span>
 <span class='doccomment'>//!     job.recv().unwrap()</span>
@@ -795,11 +795,11 @@
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>TaskFun</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>extern</span> <span class='string'>&quot;Rust&quot;</span> <span class='kw'>fn</span>(<span class='ident'>Arg</span>, <span class='ident'>FJData</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span>;
 
 <span class='doccomment'>/// Type definition of functions joining together forked results.</span>
-<span class='doccomment'>/// Only used in `AlgoStyle::Summa` algorithms with `SummaStyle::NoArg`.</span>
+<span class='doccomment'>/// Only used in `AlgoStyle::Reduce` algorithms with `ReduceStyle::NoArg`.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>TaskJoin</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>extern</span> <span class='string'>&quot;Rust&quot;</span> <span class='kw'>fn</span>(<span class='kw-2'>&amp;</span>[<span class='ident'>Ret</span>]) <span class='op'>-&gt;</span> <span class='ident'>Ret</span>;
 
 <span class='doccomment'>/// Similar to `TaskJoin` but takes an extra argument sent directly</span>
-<span class='doccomment'>/// from the task in algorithms with `SummaStyle::Arg`.</span>
+<span class='doccomment'>/// from the task in algorithms with `ReduceStyle::Arg`.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>TaskJoinArg</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>extern</span> <span class='string'>&quot;Rust&quot;</span> <span class='kw'>fn</span>(<span class='kw-2'>&amp;</span><span class='ident'>Ret</span>, <span class='kw-2'>&amp;</span>[<span class='ident'>Ret</span>]) <span class='op'>-&gt;</span> <span class='ident'>Ret</span>;
 
 <span class='doccomment'>/// Internal representation of a task.</span>
@@ -826,28 +826,28 @@
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// If the algorithm style is `AlgoStyle::Search` the value in `Done` will be sent</span>
     <span class='doccomment'>/// directly to the `Job` held by the submitter of the computation.</span>
-    <span class='doccomment'>/// If the algorithm style is `AlgoStyle::Summa` the value in `Done` will be inserted</span>
+    <span class='doccomment'>/// If the algorithm style is `AlgoStyle::Reduce` the value in `Done` will be inserted</span>
     <span class='doccomment'>/// into a join barrier and later passed to the algorithms join function when all</span>
     <span class='doccomment'>/// subtasks have completed execution.</span>
     <span class='ident'>Done</span>(<span class='ident'>Ret</span>),
 
     <span class='doccomment'>/// Return this from `TaskFun` to indicate that the algorithm wants to fork.</span>
     <span class='doccomment'>/// Takes a list of arguments to fork on. One subtask will be created for each argument.</span>
-    <span class='doccomment'>/// The second value is only used by `SummaStyle::Arg`-algorithms to send a value directly</span>
+    <span class='doccomment'>/// The second value is only used by `ReduceStyle::Arg`-algorithms to send a value directly</span>
     <span class='doccomment'>/// to the `TaskJoinArg`, passing None in such algorithms will yield a panic.</span>
     <span class='ident'>Fork</span>(<span class='ident'>Vec</span><span class='op'>&lt;</span><span class='ident'>Arg</span><span class='op'>&gt;</span>, <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>),
 }
 
 <span class='doccomment'>/// Enum representing the style of the executed algorithm.</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>AlgoStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// A `Summa` style algorithm join together the results of the individual nodes</span>
+    <span class='doccomment'>/// A `Reduce` style algorithm join together the results of the individual nodes</span>
     <span class='doccomment'>/// in the problem tree to finally form one result for the entire computation.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Examples of this style include recursively computing fibbonacci numbers</span>
     <span class='doccomment'>/// and summing binary trees.</span>
     <span class='doccomment'>///</span>
-    <span class='doccomment'>/// Takes a `SummaStyle` to indicate what type of join function to use.</span>
-    <span class='ident'>Summa</span>(<span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>),
+    <span class='doccomment'>/// Takes a `ReduceStyle` to indicate what type of join function to use.</span>
+    <span class='ident'>Reduce</span>(<span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>),
 
     <span class='doccomment'>/// A `Search` style algoritm return their results to the listener directly upon a</span>
     <span class='doccomment'>/// `TaskResult::Done`.</span>
@@ -860,7 +860,7 @@
 <span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>AlgoStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>AlgoStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='op'>*</span><span class='self'>self</span> } }
 
 <span class='doccomment'>/// Enum indicating what type of join function an `Algorithm` will use.</span>
-<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {
+<span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {
     <span class='doccomment'>/// No extra argument is passed to the join function, only the resulting values of all subtasks</span>
     <span class='ident'>NoArg</span>(<span class='ident'>TaskJoin</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>),
 
@@ -868,8 +868,8 @@
     <span class='doccomment'>/// be passed an argument sent directly from the `TaskFun`.</span>
     <span class='ident'>Arg</span>(<span class='ident'>TaskJoinArg</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>),
 }
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='ident'>Copy</span> <span class='kw'>for</span> <span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {}
-<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='op'>*</span><span class='self'>self</span> } }
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='ident'>Copy</span> <span class='kw'>for</span> <span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {}
+<span class='kw'>impl</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='ident'>Clone</span> <span class='kw'>for</span> <span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='kw'>fn</span> <span class='ident'>clone</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> { <span class='op'>*</span><span class='self'>self</span> } }
 
 <span class='doccomment'>/// The representation of a specific algorithm to use the ForkJoin library.</span>
 <span class='doccomment'>///</span>
@@ -892,8 +892,8 @@
     <span class='doccomment'>/// Atomic counter counting missing arguments before this join can be executed.</span>
     <span class='kw'>pub</span> <span class='ident'>ret_counter</span>: <span class='ident'>AtomicUsize</span>,
     <span class='doccomment'>/// Function to execute when all arguments have arrived.</span>
-    <span class='kw'>pub</span> <span class='ident'>joinfun</span>: <span class='ident'>SummaStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>,
-    <span class='doccomment'>/// Extra argument to pass to `joinfun` only used when `joinfun` is `SummaStyle::Arg`.</span>
+    <span class='kw'>pub</span> <span class='ident'>joinfun</span>: <span class='ident'>ReduceStyle</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>,
+    <span class='doccomment'>/// Extra argument to pass to `joinfun` only used when `joinfun` is `ReduceStyle::Arg`.</span>
     <span class='kw'>pub</span> <span class='ident'>joinarg</span>: <span class='prelude-ty'>Option</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>,
     <span class='doccomment'>/// Vector holding the results of all subtasks. Initialized unsafely so can&#39;t be used</span>
     <span class='doccomment'>/// for anything until all the values have been put in place.</span>
@@ -904,7 +904,7 @@
 
 <span class='doccomment'>/// Enum describing what to do with results of `Task`s and `JoinBarrier`s.</span>
 <span class='kw'>pub</span> <span class='kw'>enum</span> <span class='ident'>ResultReceiver</span><span class='op'>&lt;</span><span class='ident'>Ret</span>: <span class='ident'>Send</span> <span class='op'>+</span> <span class='ident'>Sync</span><span class='op'>&gt;</span> {
-    <span class='doccomment'>/// Algorithm has Summa style and the value should be inserted into a `JoinBarrier`</span>
+    <span class='doccomment'>/// Algorithm has Reduce style and the value should be inserted into a `JoinBarrier`</span>
     <span class='ident'>Join</span>(<span class='ident'>Unique</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>, <span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>JoinBarrier</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;&gt;</span>),
     <span class='doccomment'>/// Algorithm has Search style and results should be sent directly to the owner.</span>
     <span class='ident'>Channel</span>(<span class='ident'>Arc</span><span class='op'>&lt;</span><span class='ident'>Mutex</span><span class='op'>&lt;</span><span class='ident'>Sender</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;&gt;</span><span class='op'>&gt;</span>),
@@ -985,7 +985,7 @@
     <span class='doccomment'>/// Schedule a new computation. Returns instantly with a handle to the computation.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// Return value(s) can be read from the returned `Job`.</span>
-    <span class='doccomment'>/// `AlgoStyle::Summa` will only return one message on this channel.</span>
+    <span class='doccomment'>/// `AlgoStyle::Reduce` will only return one message on this channel.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>/// `AlgoStyle::Search` algorithm might return arbitrary number of messages.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>schedule</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>arg</span>: <span class='ident'>Arg</span>) <span class='op'>-&gt;</span> <span class='ident'>Job</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span> {

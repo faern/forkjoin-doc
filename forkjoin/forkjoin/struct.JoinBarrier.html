@@ -48,7 +48,7 @@
         </span><a id='src-2118' class='srclink' href='../src/forkjoin/lib.rs.html#343-355' title='goto source code'>[src]</a></span></h1>
 <pre class='rust struct'>pub struct JoinBarrier&lt;Ret: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Send.html' title='core::marker::Send'>Send</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sync.html' title='core::marker::Sync'>Sync</a>&gt; {
     pub ret_counter: <a class='struct' href='http://doc.rust-lang.org/nightly/core/atomic/struct.AtomicUsize.html' title='core::atomic::AtomicUsize'>AtomicUsize</a>,
-    pub joinfun: <a class='enum' href='../forkjoin/enum.SummaStyle.html' title='forkjoin::SummaStyle'>SummaStyle</a>&lt;Ret&gt;,
+    pub joinfun: <a class='enum' href='../forkjoin/enum.ReduceStyle.html' title='forkjoin::ReduceStyle'>ReduceStyle</a>&lt;Ret&gt;,
     pub joinarg: <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Ret&gt;,
     pub joinfunarg: <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;Ret&gt;,
     pub parent: <a class='enum' href='../forkjoin/enum.ResultReceiver.html' title='forkjoin::ResultReceiver'>ResultReceiver</a>&lt;Ret&gt;,
@@ -59,7 +59,7 @@
 </div></td></tr><tr class='stab '>
                                   <td id='structfield.joinfun'><code>joinfun</code></td><td><div class='docblock'><p>Function to execute when all arguments have arrived.</p>
 </div></td></tr><tr class='stab '>
-                                  <td id='structfield.joinarg'><code>joinarg</code></td><td><div class='docblock'><p>Extra argument to pass to <code>joinfun</code> only used when <code>joinfun</code> is <code>SummaStyle::Arg</code>.</p>
+                                  <td id='structfield.joinarg'><code>joinarg</code></td><td><div class='docblock'><p>Extra argument to pass to <code>joinfun</code> only used when <code>joinfun</code> is <code>ReduceStyle::Arg</code>.</p>
 </div></td></tr><tr class='stab '>
                                   <td id='structfield.joinfunarg'><code>joinfunarg</code></td><td><div class='docblock'><p>Vector holding the results of all subtasks. Initialized unsafely so can&#39;t be used
 for anything until all the values have been put in place.</p>
