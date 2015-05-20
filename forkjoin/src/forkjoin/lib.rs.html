@@ -532,19 +532,6 @@
 <span id="490">490</span>
 <span id="491">491</span>
 <span id="492">492</span>
-<span id="493">493</span>
-<span id="494">494</span>
-<span id="495">495</span>
-<span id="496">496</span>
-<span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
 </pre><pre class='rust '>
 <span class='comment'>// Copyright 2015 Linus Färnstrand</span>
 <span class='comment'>//</span>
@@ -590,7 +577,7 @@
 <span class='doccomment'>//! ## Example of reduce style (`ReduceStyle::NoArg`)</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
+<span class='doccomment'>//! use forkjoin::{TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! fn fib_30_with_4_threads() {</span>
 <span class='doccomment'>//!     let forkpool = ForkPool::with_threads(4);</span>
@@ -604,7 +591,7 @@
 <span class='doccomment'>//!     assert_eq!(1346269, result);</span>
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! fn fib_task(n: usize, _: FJData) -&gt; TaskResult&lt;usize, usize&gt; {</span>
+<span class='doccomment'>//! fn fib_task(n: usize, _: usize) -&gt; TaskResult&lt;usize, usize&gt; {</span>
 <span class='doccomment'>//!     if n &lt; 2 {</span>
 <span class='doccomment'>//!         TaskResult::Done(1)</span>
 <span class='doccomment'>//!     } else {</span>
@@ -620,7 +607,7 @@
 <span class='doccomment'>//! ## Example of reduce style (`ReduceStyle::Arg`)</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! use forkjoin::{FJData,TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
+<span class='doccomment'>//! use forkjoin::{TaskResult,ForkPool,AlgoStyle,ReduceStyle,Algorithm};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! struct Tree {</span>
 <span class='doccomment'>//!     value: usize,</span>
@@ -637,11 +624,9 @@
 <span class='doccomment'>//!     job.recv().unwrap()</span>
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! fn sum_tree_task(t: &amp;Tree, fj: FJData) -&gt; TaskResult&lt;&amp;Tree, usize&gt; {</span>
+<span class='doccomment'>//! fn sum_tree_task(t: &amp;Tree, _: usize) -&gt; TaskResult&lt;&amp;Tree, usize&gt; {</span>
 <span class='doccomment'>//!     if t.children.is_empty() {</span>
 <span class='doccomment'>//!         TaskResult::Done(t.value)</span>
-<span class='doccomment'>//!     } else if fj.depth &gt; fj.workers { // Bad example of serial threshold</span>
-<span class='doccomment'>//!         TaskResult::Done(sum_tree_seq(t))</span>
 <span class='doccomment'>//!     } else {</span>
 <span class='doccomment'>//!         let mut fork_args: Vec&lt;&amp;Tree&gt; = vec![];</span>
 <span class='doccomment'>//!         for c in t.children.iter() {</span>
@@ -674,7 +659,7 @@
 <span class='doccomment'>//! ## Example of search style</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! ```rust</span>
-<span class='doccomment'>//! use forkjoin::{FJData,ForkPool,TaskResult,AlgoStyle,Algorithm};</span>
+<span class='doccomment'>//! use forkjoin::{ForkPool,TaskResult,AlgoStyle,Algorithm};</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! type Queen = usize;</span>
 <span class='doccomment'>//! type Board = Vec&lt;Queen&gt;;</span>
@@ -703,7 +688,7 @@
 <span class='doccomment'>//!     println!(&quot;Found {} solutions to nqueens({}x{})&quot;, num_solutions, n, n);</span>
 <span class='doccomment'>//! }</span>
 <span class='doccomment'>//!</span>
-<span class='doccomment'>//! fn nqueens_task((q, n): (Board, usize), fj: FJData) -&gt; TaskResult&lt;(Board,usize), Board&gt; {</span>
+<span class='doccomment'>//! fn nqueens_task((q, n): (Board, usize), _: usize) -&gt; TaskResult&lt;(Board,usize), Board&gt; {</span>
 <span class='doccomment'>//!     if q.len() == n {</span>
 <span class='doccomment'>//!         TaskResult::Done(q)</span>
 <span class='doccomment'>//!     } else {</span>
@@ -792,7 +777,7 @@
 
 <span class='doccomment'>/// Type definition of the main function in a task.</span>
 <span class='doccomment'>/// Your task functions must have this signature</span>
-<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>TaskFun</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>extern</span> <span class='string'>&quot;Rust&quot;</span> <span class='kw'>fn</span>(<span class='ident'>Arg</span>, <span class='ident'>FJData</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span>;
+<span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>TaskFun</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='kw'>extern</span> <span class='string'>&quot;Rust&quot;</span> <span class='kw'>fn</span>(<span class='ident'>Arg</span>, <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>TaskResult</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span>;
 
 <span class='doccomment'>/// Type definition of functions joining together forked results.</span>
 <span class='doccomment'>/// Only used in `AlgoStyle::Reduce` algorithms with `ReduceStyle::NoArg`.</span>
@@ -807,16 +792,6 @@
     <span class='kw'>pub</span> <span class='ident'>algo</span>: <span class='ident'>Algorithm</span><span class='op'>&lt;</span><span class='ident'>Arg</span>, <span class='ident'>Ret</span><span class='op'>&gt;</span>,
     <span class='kw'>pub</span> <span class='ident'>arg</span>: <span class='ident'>Arg</span>,
     <span class='kw'>pub</span> <span class='ident'>join</span>: <span class='ident'>ResultReceiver</span><span class='op'>&lt;</span><span class='ident'>Ret</span><span class='op'>&gt;</span>,
-    <span class='kw'>pub</span> <span class='ident'>depth</span>: <span class='ident'>usize</span>,
-}
-
-<span class='doccomment'>/// Fork-join Data. Contains data about the currently executed job.</span>
-<span class='doccomment'>/// Can be used by `TaskFun` to determine whether or not to go over to serial code.</span>
-<span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>FJData</span> {
-    <span class='doccomment'>/// Number of worker threads in this `ForkPool`</span>
-    <span class='kw'>pub</span> <span class='ident'>workers</span>: <span class='ident'>usize</span>,
-    <span class='doccomment'>/// Depth in the fork-join tree of the current task.</span>
-    <span class='kw'>pub</span> <span class='ident'>depth</span>: <span class='ident'>usize</span>,
 }
 
 <span class='doccomment'>/// Return values from tasks. Represent a computed value or a fork of the algorithm.</span>
@@ -995,7 +970,6 @@
             <span class='ident'>algo</span>: <span class='self'>self</span>.<span class='ident'>algo</span>,
             <span class='ident'>arg</span>: <span class='ident'>arg</span>,
             <span class='ident'>join</span>: <span class='ident'>ResultReceiver</span>::<span class='ident'>Channel</span>(<span class='ident'>Arc</span>::<span class='ident'>new</span>(<span class='ident'>Mutex</span>::<span class='ident'>new</span>(<span class='ident'>chan</span>))),
-            <span class='ident'>depth</span>: <span class='number'>0</span>,
         };
         <span class='self'>self</span>.<span class='ident'>forkpool</span>.<span class='ident'>schedule</span>(<span class='ident'>task</span>);
 
